@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>量子力学入门 · 新手友好路径</title>
+<style>
+  :root{
+    --bg:#0d1117; --panel:#161b22; --panel2:#1c2330; --line:#2a3340;
+    --txt:#e6edf3; --muted:#9aa7b4; --accent:#5ed0ff; --accent2:#ffb454;
+    --good:#5ee29a; --bad:#ff6b6b; --violet:#b58bff;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--txt);
+    font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    line-height:1.7;font-size:16px}
+  a{color:var(--accent);text-decoration:none}
+  .wrap{max-width:960px;margin:0 auto;padding:0 20px}
+  header.hero{padding:64px 0 40px;
+    background:radial-gradient(1200px 400px at 70% -10%,rgba(94,208,255,.12),transparent)}
+  .hero h1{font-size:34px;margin:0 0 8px;letter-spacing:.5px}
+  .hero p{color:var(--muted);max-width:640px;margin:6px 0}
+  .badge{display:inline-block;font-size:12px;color:var(--accent);
+    border:1px solid var(--line);border-radius:20px;padding:3px 12px;margin-bottom:14px}
+  nav{position:sticky;top:0;z-index:10;background:rgba(13,17,23,.85);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 20px}
+  nav a{font-size:13px;color:var(--muted);padding:6px 10px;border-radius:8px}
+  nav a:hover{background:var(--panel2);color:var(--txt)}
+  section{padding:48px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:24px;margin:0 0 6px;display:flex;align-items:center;gap:10px}
+  .stage-tag{font-size:12px;color:#0d1117;background:var(--accent);
+    border-radius:6px;padding:2px 8px;font-weight:700}
+  .lead{color:var(--muted);margin:0 0 22px;max-width:680px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    padding:20px;margin:14px 0}
+  .card h3{margin:0 0 8px;font-size:17px;color:var(--accent2)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+  .pill{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:14px}
+  .pill b{color:var(--accent)}
+  .sim{background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    padding:18px;margin:16px 0}
+  canvas{width:100%;display:block;background:#0a0e14;border-radius:10px;border:1px solid var(--line)}
+  .controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
+  button{background:var(--accent);color:#06121a;border:none;border-radius:8px;
+    padding:8px 16px;font-size:14px;font-weight:600;cursor:pointer}
+  button.ghost{background:transparent;color:var(--txt);border:1px solid var(--line)}
+  .toggle{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
+  table{width:100%;border-collapse:collapse;margin:10px 0;font-size:15px}
+  th,td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--muted);font-weight:600;font-size:13px}
+  .myth{color:var(--bad)} .real{color:var(--good)}
+  .bars{display:flex;gap:18px;align-items:flex-end;height:140px;margin-top:8px}
+  .bar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px}
+  .bar .fill{width:100%;border-radius:8px 8px 0 0;transition:height .15s}
+  .bar .lbl{font-size:13px;color:var(--muted)}
+  .bar .val{font-size:15px;font-weight:700}
+  .note{font-size:13px;color:var(--muted);margin-top:8px}
+  .gloss{display:grid;grid-template-columns:120px 1fr;gap:8px 16px;font-size:14px}
+  .gloss dt{color:var(--violet);font-weight:600}
+  .gloss dd{margin:0;color:var(--muted)}
+  footer{padding:40px 0 80px;color:var(--muted);font-size:14px}
+  .big{font-size:18px;color:var(--txt)}
+  code{background:var(--panel2);padding:1px 6px;border-radius:5px;font-size:13px;color:var(--accent2)}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="badge">新手友好 · 概念门优先</div>
+    <h1>量子力学入门：先搞懂能搞懂的部分</h1>
+    <p>很多人急着抓"真谛"，但直接啃教材被数学劝退，只看科普又满脑子科幻。这里把量子力学拆成两道门——你先从<strong>概念门</strong>进，浅尝一点数学味道，再被指去正经学习。不速成，也不空谈。</p>
+  </div>
+</header>
+
+<nav>
+  <div class="wrap">
+    <a href="#s0">心态校准</a>
+    <a href="#s1">① 现象课</a>
+    <a href="#s2">② 思维转换</a>
+    <a href="#s3">③ 极简形式</a>
+    <a href="#myth">神话粉碎</a>
+    <a href="#gloss">术语词典</a>
+    <a href="#next">深造地图</a>
+  </div>
+</nav>
+
+<!-- STAGE 0 -->
+<section id="s0">
+  <div class="wrap">
+    <h2><span class="stage-tag">Stage 0</span> 心态校准：它是什么，不是什么</h2>
+    <p class="lead">在往前走之前，先打三剂预防针。这能帮你避开 90% 新手会踩的坑。</p>
+    <div class="grid">
+      <div class="pill"><b>不是魔法。</b> 它是一套关于"非常小尺度"世界的精确理论，预测和实验吻合到小数点后十几位。</div>
+      <div class="pill"><b>用概率说话。</b> 它不预测单次结果，只预测大量重复下的频率。这不是"我们无知"，是宇宙本身的特性。</div>
+      <div class="pill"><b>不用先懂微积分。</b> 你可以先建立正确直觉，再回头补数学。</div>
+      <div class="pill"><b>也没有速成真谛。</b> 真正掌握需要后面补线性代数与微积分——本站只负责把你领进门。</div>
+    </div>
+  </div>
+</section>
+
+<!-- STAGE 1 -->
+<section id="s1">
+  <div class="wrap">
+    <h2><span class="stage-tag">Stage 1</span> 现象课：纯概念，先被惊到</h2>
+    <p class="lead">这一阶段不用任何公式。先看四个真实实验——它们都发生过，都是"反直觉但千真万确"的。</p>
+
+    <div class="sim">
+      <h3 style="margin-top:0;color:var(--accent2)">交互 · 双缝实验模拟器</h3>
+      <p class="note">粒子一个一个打向屏幕。关掉"观测"时，它们自己叠出明暗相间的干涉条纹；一旦观测"它从哪条缝过"，干涉消失，只剩两道带——<strong>观测改变了结果</strong>。</p>
+      <canvas id="slit" width="700" height="340"></canvas>
+      <div class="controls">
+        <button id="slitRun">▶ 开始发射</button>
+        <button id="slitReset" class="ghost">重置</button>
+        <label class="toggle"><input type="checkbox" id="observe"> 开启观测（记录路径）</label>
+        <span class="note" id="slitCount">已落屏：0</span>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card"><h3>光电效应</h3>光打在金属上打出电子，但弱红光再久也打不出，蓝光一照就有——因为光是一份一份的（光子）。解释了太阳能板与相机。</div>
+      <div class="card"><h3>原子光谱线</h3>每种原子只发出固定颜色的光。说明原子内部的能量是"台阶"而非"斜坡"：电子只能待在离散能级上。</div>
+      <div class="card"><h3>黑体辐射</h3>烧热的铁从红变白。经典理论算出来会"紫外灾难"，是普朗克提出"能量量子化"才救回来——量子论由此诞生。</div>
+    </div>
+  </div>
+</section>
+
+<!-- STAGE 2 -->
+<section id="s2">
+  <div class="wrap">
+    <h2><span class="stage-tag">Stage 2</span> 思维转换：三个反直觉的点</h2>
+    <p class="lead">概念门里最贵的三课。它们不教你算，只改变你"怎么想这个世界"。</p>
+    <div class="card">
+      <h3>① 概率本性</h3>
+      经典概率来自"信息不足"（掷骰子因为你没看清力度）。量子概率不是——即使你把一切测得再准，单次结果依然本质上不确定。理论只给频率。
+    </div>
+    <div class="card">
+      <h3>② 不确定性原理（直觉版）</h3>
+      有些成对的量（如位置与动量）不能<strong>同时</strong>无限精准。这不是仪器不够好，是自然界的结构性限制。先记住这个结论，公式 <code>Δx·Δp ≥ ℏ/2</code> 留到深造阶段。
+    </div>
+    <div class="card">
+      <h3>③ 叠加 = "同时的可能性"</h3>
+      一个系统可以同时处于多种可能性的<strong>叠加</strong>。但"叠加"是概率幅的共存，不是经典意义上"同时在一个地方"。测量后才呈现出某一个确定结果。
+    </div>
+  </div>
+</section>
+
+<!-- STAGE 3 -->
+<section id="s3">
+  <div class="wrap">
+    <h2><span class="stage-tag">Stage 3</span> 极简形式：态是一支箭头</h2>
+    <p class="lead">到这里才浅尝数学——但<strong>不求导、不积分</strong>。把一个量子状态想成单位圆里的一支箭头。</p>
+
+    <div class="sim">
+      <h3 style="margin-top:0;color:var(--accent2)">交互 · Qubit 拖拽 playground</h3>
+      <p class="note">拖动箭头设定状态 <code>|ψ⟩ = cos(θ/2)|0⟩ + sin(θ/2)|1⟩</code>。玻恩规则：测到 |0⟩ 的概率 = 箭头在竖轴投影的平方。点"测量"看单次随机结果。</p>
+      <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:center">
+        <canvas id="qubit" width="300" height="300" style="width:300px;flex:0 0 auto"></canvas>
+        <div style="flex:1;min-width:240px">
+          <div class="bars">
+            <div class="bar"><div class="val" id="p0v">50%</div><div class="fill" id="p0" style="background:var(--accent);height:50%"></div><div class="lbl">|0⟩ 概率</div></div>
+            <div class="bar"><div class="val" id="p1v">50%</div><div class="fill" id="p1" style="background:var(--accent2);height:50%"></div><div class="lbl">|1⟩ 概率</div></div>
+          </div>
+          <div class="controls">
+            <button id="measure">测量一次</button>
+            <button id="qreset" class="ghost">复位</button>
+          </div>
+          <p class="note" id="mlog">测量结果：—（|0⟩ 次数 0 / |1⟩ 次数 0）</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>本课记住三句话</h3>
+      • <strong>态 = 箭头</strong>（二维向量，长度固定为 1）。<br>
+      • <strong>概率幅</strong>是箭头在基（|0⟩、|1⟩）上的投影，可以是复数。<br>
+      • <strong>玻恩规则</strong>：概率 = |投影|²。这就是全部"计算"的雏形——真正的量子力学只是把这支箭头换成更高维、带复数的版本。
+    </div>
+  </div>
+</section>
+
+<!-- MYTH -->
+<section id="myth">
+  <div class="wrap">
+    <h2>神话粉碎机：科幻 vs 现实</h2>
+    <p class="lead">新手最该补的一节。下面每一条都是科普常犯的夸大，逐一拆掉。</p>
+    <table>
+      <thead><tr><th>科幻说法</th><th>现实</th></tr></thead>
+      <tbody>
+        <tr><td class="myth">"观测者"是人的意识让波函数坍缩</td><td class="real">任何宏观测量设备都算"观测"，与人的意识无关。是系统与设备的相互作用导致坍缩。</td></tr>
+        <tr><td class="myth">量子纠缠能超光速通信</td><td class="real">不能。两地测量结果确实关联，但无法据此主动传任何信息，不违反相对论。</td></tr>
+        <tr><td class="myth">电子"同时在一个地方"</td><td class="real">叠加是概率幅的共存，不是经典位置共存。测量后只出现一个确定位置。</td></tr>
+        <tr><td class="myth">薛定谔的猫又死又活</td><td class="real">宏观物体极易与环境纠缠而"退相干"，猫在开箱前早已具有确定状态。这是思想实验，不是日常现实。</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- GLOSSARY -->
+<section id="gloss">
+  <div class="wrap">
+    <h2>术语词典：被滥用的词给准确定义</h2>
+    <p class="lead">同一个词在科普和教材里意思差很远。先对齐语言，后面才不会糊涂。</p>
+    <dl class="gloss">
+      <dt>观测 / 测量</dt><dd>量子系统与宏观设备相互作用，记录下某个本征值的过程。</dd>
+      <dt>坍缩</dt><dd>测量后，系统状态变为对应那个测量结果的本征态。</dd>
+      <dt>概率幅</dt><dd>复数的"权重"，事件发生的概率 = |概率幅|²（玻恩规则）。</dd>
+      <dt>基（basis）</dt><dd>一组完备的参照状态，如 |0⟩ 和 |1⟩，任何态都能表示成它们的叠加。</dd>
+      <dt>退相干</dt><dd>系统与环境纠缠后，叠加特征快速消失，表现得像经典物体。</dd>
+    </dl>
+  </div>
+</section>
+
+<!-- NEXT -->
+<section id="next">
+  <div class="wrap">
+    <h2>深造地图：下一步往哪走</h2>
+    <p class="lead">概念门你已走过。要真正掌握，得补数学、再进形式门。</p>
+    <div class="grid">
+      <div class="pill"><b>先修数学</b><br>复数 → 向量与矩阵 → 基础微积分 → 线性代数。Stage 3 只用到前两项。</div>
+      <div class="pill"><b>半技术读物</b><br>无微积分的量子科普/导论，先建立形式感，再上教材。</div>
+      <div class="pill"><b>正经教材</b><br>格里菲斯《量子力学概论》是经典入门；之后才是更严格的体系。</div>
+    </div>
+    <p class="big" style="margin-top:24px">你已经搞懂了"能搞懂的部分"。剩下的不是天赋问题，是一步步补数学的问题——而那一步，现在你知道路在哪了。</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">原型 · 量子力学新手友好路径 v0.1 — 概念门优先，交互可玩，零依赖单文件。</div>
+</footer>
+
+<script>
+/* ---------- 双缝模拟器 ---------- */
+(function(){
+  const cv=document.getElementById('slit'), ctx=cv.getContext('2d');
+  const W=cv.width, H=cv.height;
+  const barrierX=W*0.32, screenX=W*0.92, srcX=W*0.06;
+  let dots=[], running=false, raf=null, observe=false;
+  const MAX=1800;
+
+  function distInterf(y){ // 干涉：多条纹 + 包络
+    const c=H/2, u=y-c;
+    const fringe=Math.cos(u*0.16)**2;
+    const env=Math.exp(-(u*u)/(2*(H*0.34)**2));
+    return fringe*env;
+  }
+  function distWhich(y){ // 有路径信息：两道带
+    const c=H/2, s=H*0.16, sig=H*0.09;
+    const a=Math.exp(-((y-(c-s))**2)/(2*sig*sig));
+    const b=Math.exp(-((y-(c+s))**2)/(2*sig*sig));
+    return 0.5*(a+b);
+  }
+  function sampleY(){
+    const f=observe?distWhich:distInterf;
+    let maxI=1;
+    for(let i=0;i<30;i++){const y=Math.random()*H; maxI=Math.max(maxI,f(y));}
+    for(let i=0;i<200;i++){
+      const y=Math.random()*H, r=Math.random()*maxI;
+      if(r<f(y)) return y;
+    }
+    return Math.random()*H;
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    // 源
+    ctx.fillStyle='#5ed0ff'; ctx.beginPath(); ctx.arc(srcX,H/2,7,0,7); ctx.fill();
+    // 屏障 + 双缝
+    ctx.fillStyle='#2a3340';
+    const gap=H*0.10, slitH=H*0.045;
+    ctx.fillRect(barrierX-4,0,8,(H/2-gap/2-slitH));
+    ctx.fillRect(barrierX-4,(H/2-gap/2+slitH),8,2*slitH-slitH);
+    ctx.fillRect(barrierX-4,(H/2+gap/2+slitH),8,(H/2-gap/2-slitH));
+    // 屏
+    ctx.strokeStyle='#3a4654'; ctx.beginPath(); ctx.moveTo(screenX,0); ctx.lineTo(screenX,H); ctx.stroke();
+    // 点
+    for(const d of dots){ ctx.fillStyle = observe? 'rgba(255,180,84,.7)':'rgba(94,208,255,.7)'; ctx.fillRect(screenX-3, d.y, 3, 3); }
+    // 标签
+    ctx.fillStyle='#9aa7b4'; ctx.font='12px sans-serif';
+    ctx.fillText('源',srcX-6,H/2-14);
+    ctx.fillText('双缝',barrierX-14,H/2+gap/2+slitH+18);
+    ctx.fillText('屏（积累）',screenX-44,H-8);
+    if(observe){ ctx.fillStyle='#ffb454'; ctx.fillText('● 观测中：路径已知',barrierX+14,24); }
+  }
+  function loop(){
+    if(!running) return;
+    if(dots.length<MAX){
+      for(let i=0;i<24;i++) dots.push({y:sampleY()});
+      document.getElementById('slitCount').textContent='已落屏：'+dots.length;
+      draw();
+      raf=requestAnimationFrame(loop);
+    } else { running=false; }
+  }
+  document.getElementById('slitRun').onclick=()=>{ if(dots.length>=MAX) return; running=true; loop(); };
+  document.getElementById('slitReset').onclick=()=>{ dots=[]; running=false; if(raf)cancelAnimationFrame(raf); document.getElementById('slitCount').textContent='已落屏：0'; draw(); };
+  document.getElementById('observe').onchange=(e)=>{ observe=e.target.checked; dots=[]; document.getElementById('slitCount').textContent='已落屏：0'; if(running){running=false;if(raf)cancelAnimationFrame(raf);} draw(); };
+  draw();
+})();
+
+/* ---------- Qubit playground ---------- */
+(function(){
+  const cv=document.getElementById('qubit'), ctx=cv.getContext('2d');
+  const S=cv.width, cx=S/2, cy=S/2, R=S*0.38;
+  let theta=Math.PI/2; // 从 |0>(上) 起算
+  let dragging=false, m0=0, m1=0;
+  function setBars(){
+    const p0=Math.cos(theta/2)**2, p1=1-p0;
+    document.getElementById('p0').style.height=(p0*100)+'%';
+    document.getElementById('p1').style.height=(p1*100)+'%';
+    document.getElementById('p0v').textContent=Math.round(p0*100)+'%';
+    document.getElementById('p1v').textContent=Math.round(p1*100)+'%';
+  }
+  function draw(){
+    ctx.clearRect(0,0,S,S);
+    // 圆
+    ctx.strokeStyle='#2a3340'; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(cx,cy,R,0,7); ctx.stroke();
+    // 轴 |0> 上, |1> 下
+    ctx.strokeStyle='#3a4654'; ctx.setLineDash([4,4]);
+    ctx.beginPath(); ctx.moveTo(cx,cy-R); ctx.lineTo(cx,cy+R); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle='#9aa7b4'; ctx.font='13px sans-serif';
+    ctx.fillText('|0⟩',cx+8,cy-R+4); ctx.fillText('|1⟩',cx+8,cy+R-4);
+    // 箭头
+    const ax=cx+R*Math.sin(theta), ay=cy-R*Math.cos(theta);
+    ctx.strokeStyle='#5ed0ff'; ctx.lineWidth=4; ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(ax,ay); ctx.stroke();
+    ctx.fillStyle='#5ed0ff'; ctx.beginPath(); ctx.arc(ax,ay,9,0,7); ctx.fill();
+    ctx.fillStyle='#e6edf3'; ctx.beginPath(); ctx.arc(cx,cy,4,0,7); ctx.fill();
+  }
+  function pos(e){ const r=cv.getBoundingClientRect(); const x=(e.clientX-r.left)*(S/r.width); const y=(e.clientY-r.top)*(S/r.height);
+    theta=Math.atan2(x-cx, -(y-cy)); if(theta<0)theta+=Math.PI*2; if(theta>Math.PI)theta=Math.PI; setBars(); draw(); }
+  cv.addEventListener('pointerdown',e=>{dragging=true;pos(e);});
+  window.addEventListener('pointermove',e=>{if(dragging)pos(e);});
+  window.addEventListener('pointerup',()=>dragging=false);
+  document.getElementById('measure').onclick=()=>{
+    const p0=Math.cos(theta/2)**2; const out=Math.random()<p0;
+    if(out)m0++;else m1++;
+    document.getElementById('mlog').textContent='测量结果：'+(out?'|0⟩':'|1⟩')+'（|0⟩ 次数 '+m0+' / |1⟩ 次数 '+m1+'）';
+  };
+  document.getElementById('qreset').onclick=()=>{ theta=Math.PI/2; m0=0; m1=0; setBars(); draw(); document.getElementById('mlog').textContent='测量结果：—（|0⟩ 次数 0 / |1⟩ 次数 0）'; };
+  setBars(); draw();
+})();
+</script>
+</body>
+</html>
