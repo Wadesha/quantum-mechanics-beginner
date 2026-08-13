@@ -57,6 +57,8 @@
   .bar .lbl{font-size:13px;color:var(--muted)}
   .bar .val{font-size:15px;font-weight:700}
   .note{font-size:13px;color:var(--muted);margin-top:8px}
+  .warn{font-size:12px;color:var(--accent2);border-left:3px solid var(--accent2);
+    padding:5px 10px;margin-top:10px;background:rgba(255,180,84,.07);border-radius:0 6px 6px 0}
   .gloss{display:grid;grid-template-columns:120px 1fr;gap:8px 16px;font-size:14px}
   .gloss dt{color:var(--violet);font-weight:600}
   .gloss dd{margin:0;color:var(--muted)}
@@ -105,11 +107,12 @@
 <section id="s1">
   <div class="wrap">
     <h2><span class="stage-tag">Stage 1</span> 现象课：纯概念，先被惊到</h2>
-    <p class="lead">这一阶段不用任何公式。先看四个真实实验——它们都发生过，都是"反直觉但千真万确"的。</p>
+    <p class="lead">这一阶段不用任何公式。先看几个真实实验——它们都发生过，都是"反直觉但千真万确"的。</p>
 
     <div class="sim">
       <h3 style="margin-top:0;color:var(--accent2)">交互 · 双缝实验模拟器</h3>
       <p class="note">粒子一个一个打向屏幕。关掉"观测"时，它们自己叠出明暗相间的干涉条纹；一旦观测"它从哪条缝过"，干涉消失，只剩两道带——<strong>观测改变了结果</strong>。</p>
+      <p class="warn">⚠ 简化教学模型：真实双缝用波函数演化，这里用采样分布近似，用于建立直觉，不等于严格计算。</p>
       <canvas id="slit" width="700" height="340"></canvas>
       <div class="controls">
         <button id="slitRun">▶ 开始发射</button>
@@ -123,6 +126,7 @@
       <div class="card"><h3>光电效应</h3>光打在金属上打出电子，但弱红光再久也打不出，蓝光一照就有——因为光是一份一份的（光子）。解释了太阳能板与相机。</div>
       <div class="card"><h3>原子光谱线</h3>每种原子只发出固定颜色的光。说明原子内部的能量是"台阶"而非"斜坡"：电子只能待在离散能级上。</div>
       <div class="card"><h3>黑体辐射</h3>烧热的铁从红变白。经典理论算出来会"紫外灾难"，是普朗克提出"能量量子化"才救回来——量子论由此诞生。</div>
+      <div class="card"><h3>隧穿效应</h3>粒子能"穿"过本应不可逾越的势垒。它真实发生：太阳靠它核聚变，U 盘靠它存数据，显微镜靠它成像。不是 bug，是量子世界的常态。</div>
     </div>
   </div>
 </section>
@@ -156,6 +160,7 @@
     <div class="sim">
       <h3 style="margin-top:0;color:var(--accent2)">交互 · Qubit 拖拽 playground</h3>
       <p class="note">拖动箭头设定状态 <code>|ψ⟩ = cos(θ/2)|0⟩ + sin(θ/2)|1⟩</code>。玻恩规则：测到 |0⟩ 的概率 = 箭头在竖轴投影的平方。点"测量"看单次随机结果。</p>
+      <p class="warn">⚠ 简化模型：真实 qubit 还有相位 φ 与更高维态，这里只用二维实数投影建立直觉。</p>
       <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:center">
         <canvas id="qubit" width="300" height="300" style="width:300px;flex:0 0 auto"></canvas>
         <div style="flex:1;min-width:240px">
@@ -168,6 +173,7 @@
             <button id="qreset" class="ghost">复位</button>
           </div>
           <p class="note" id="mlog">测量结果：—（|0⟩ 次数 0 / |1⟩ 次数 0）</p>
+          <p class="note" id="amp">概率幅：cos(θ/2) = 0.707 · sin(θ/2) = 0.707</p>
         </div>
       </div>
     </div>
@@ -228,7 +234,7 @@
 </section>
 
 <footer>
-  <div class="wrap">原型 · 量子力学新手友好路径 v0.1 — 概念门优先，交互可玩，零依赖单文件。</div>
+  <div class="wrap">成品 v1.0 · 量子力学新手友好路径 — 概念门优先，交互可玩，零依赖单文件。本站范围：领进门，不替代系统教材。</div>
 </footer>
 
 <script>
@@ -306,10 +312,12 @@
   let dragging=false, m0=0, m1=0;
   function setBars(){
     const p0=Math.cos(theta/2)**2, p1=1-p0;
+    const a0=Math.cos(theta/2), a1=Math.sin(theta/2);
     document.getElementById('p0').style.height=(p0*100)+'%';
     document.getElementById('p1').style.height=(p1*100)+'%';
     document.getElementById('p0v').textContent=Math.round(p0*100)+'%';
     document.getElementById('p1v').textContent=Math.round(p1*100)+'%';
+    document.getElementById('amp').textContent='概率幅：cos(θ/2) = '+a0.toFixed(3)+' · sin(θ/2) = '+a1.toFixed(3);
   }
   function draw(){
     ctx.clearRect(0,0,S,S);
